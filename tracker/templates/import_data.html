@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Import Data{% endblock %}
 {% block content %}
 
   <div class="file-upload d-flex justify-content-center">
@@ -16,12 +17,12 @@
         <input type="file" name="inputFile" id="chooseFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
       </div>
       {% if success %}
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Uploaded successfully
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          Uploaded successfully
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       {% endif %}
       <input type="submit" value="Upload" class="btn btn-primary">
     </form>
