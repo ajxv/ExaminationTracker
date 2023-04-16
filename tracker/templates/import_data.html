@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <div class="file-upload d-flex justify-content-center">
+    <form method="POST">
+      <label class="font-weight-bold h6 mb-3">Import Data</label>
+
+      <input type="date" class="form-control mb-1" name="date" id="date" required>
+      
+      <div class="file-select mb-3">
+        <div class="file-select-button" id="fileName">Choose File</div>
+        <div class="file-select-name" id="noFile">No file chosen...</div>
+        <input type="file" name="chooseFile" id="chooseFile" required>
+      </div>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Uploaded successfully
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <input type="submit" value="Upload" class="btn btn-primary">
+    </form>
+  </div>
+
+{% endblock %}

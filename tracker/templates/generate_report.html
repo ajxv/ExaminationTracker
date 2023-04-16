@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="file-download d-flex justify-content-center">
+        <form method="POST">
+            <label class="font-weight-bold h6 mb-3">Generate Report</label>
+
+            <input type="date" class="form-control mb-1" name="date" id="date" required>
+
+            <select class="custom-select mb-3" id="deanery" required>
+                <option value="" selected>Deanery</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            
+            <input type="submit" value="Generate Report" class="btn btn-primary">
+        </form>
+    </div>
+
+{% endblock %}
