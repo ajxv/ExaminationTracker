@@ -5,6 +5,7 @@
 
     <div class="file-download d-flex justify-content-center">
         <form method="POST">
+            {% csrf_token %}
             <label class="font-weight-bold h6 mb-3">Generate Report</label>
 
             <input type="date" class="form-control mb-1" name="date" id="date" required>

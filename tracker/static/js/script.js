@@ -9,3 +9,6 @@ $('#chooseFile').bind('change', function () {
         $("#noFile").text(filename.replace("C:\\fakepath\\", "").substring(0, 30));
     }
 });
+
+// set default value of all input type=date as todays date
+document.getElementById('date').valueAsDate = new Date()
