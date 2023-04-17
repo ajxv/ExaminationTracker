@@ -9,8 +9,15 @@
         <form method="POST">
             {% csrf_token %}
             <label class="font-weight-bold h6 mb-3">Generate Report</label>
-
-            <input type="date" class="form-control mb-1" name="date" id="date" required>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <input type="date" class="form-control mb-1" name="date" id="date" style="width: 200px;" required>
+                </div>
+                <select class="custom-select text-center" id="exam_shift" name="exam_shift" required>
+                  <option value="AM" selected>AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
 
             <select class="custom-select mb-3" name="deanery" required>
                 <option value="" selected>Deanery</option>

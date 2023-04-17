@@ -12,12 +12,17 @@ if not os.path.exists(INPUT_FILES_PATH):
 if not os.path.exists(OUTPUT_FILES_PATH):
     os.mkdir(OUTPUT_FILES_PATH)
 
-DEANERY_DICT = {
+DEANERY_COURSE_MAP = {
     'SCIENCE'   : ['CSC_UG-Computer Science_UG', 'LSC_UG-Life Science_UG'],
     'HUMANITIES': ['HUM_UG-Humanities_UG'],
     'MANAGEMENT': ['COM_UG-Commerce_UG', 'MGT_UG-Management Studies_UG']
 }
 
+DEANERY_SUBJECT_MAP = {
+    'SCIENCE'   : [],
+    'HUMANITIES': [],
+    'MANAGEMENT': []
+}
 
 
 def index(request):
@@ -52,14 +57,15 @@ def generate_report(request):
 
         date = request.POST['date']
         deanery = request.POST["deanery"].upper()
+        exam_shift = request.POST['exam_shift']
 
         output_data = {
-            'date': date,
-            'subject_code': None,
-            'subject_title': None,
-            'packets': None,
-            'present': None,
-            'absent': None,
+            'date': [],
+            'subject_code': [],
+            'subject_title': [],
+            'packets': [],
+            'present': [],
+            'absent': [],
         }
 
         print(date, deanery)
@@ -68,23 +74,36 @@ def generate_report(request):
 
         df = pd.read_excel(input_file)
 
-        deanery_data = df.loc[df['Academic Site'].isin(DEANERY_DICT[deanery])]
+        # filter by deanery and exam shift
+        deanery_data = df.loc[(df['Academic Site'].isin(DEANERY_COURSE_MAP[deanery])) & (df['Exam Shift'] == exam_shift)]
         subjects = deanery_data['Subject Code'].unique()
 
         for subject in subjects:
+            # if subject not in DEANERY_SUBJECT_MAP[deanery]:
+            #     continue
+
             subjectwise_data = deanery_data.loc[df['Subject Code'] == subject]
 
-            output_data['subject_code'] = subject
-            output_data['subject_title'] = subjectwise_data['Subject Name(Exam Dependent)'].unique()
-            output_data['present'] = subjectwise_data['Attendance Status'].value_counts().get('Present', 0)
-            output_data['absent'] = subjectwise_data['Attendance Status'].value_counts().get('Absent', 0)
+            output_data['date'].append(date)
+            output_data['subject_code'].append(subject)
+            output_data['subject_title'].append(subjectwise_data['Subject Name(Exam Dependent)'].unique()[0])
+            output_data['present'].append(subjectwise_data['Attendance Status'].value_counts().get('Present', 0))
+            output_data['absent'].append(subjectwise_data['Attendance Status'].value_counts().get('Absent', 0))
+            output_data['packets'].append(None)
             
 
         output_df = pd.DataFrame(output_data)
         output_html_path = os.path.join(OUTPUT_FILES_PATH, 'report.html')
         output_pdf_path = os.path.join(OUTPUT_FILES_PATH, f'{date}_{deanery}_report.pdf')
 
-        output_df.to_html(output_html_path)
+        table_html = output_df.to_html()
+
+        params = {
+            'table_html': table_html,
+            'deanery': deanery,
+        }
+
+        return render(request, 'report.html', params)
 
     params = {
         'success': success,
