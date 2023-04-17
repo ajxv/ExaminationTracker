@@ -29,7 +29,8 @@
 
 /* file Upload */
 
-.file-upload, .file-download {
+.file-upload,
+.file-download {
     display: block;
     text-align: center;
     font-family: Helvetica, Arial, sans-serif;

@@ -25,15 +25,11 @@
                 <option value="management">Management</option>
                 <option value="humanities">Humanities</option>
             </select>
-            {% if success %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Report Generated successfully
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
-            <input type="submit" value="Generate Report" class="btn btn-primary">
+            <div>
+                <input type="checkbox" id="report_type" name="report_type" value="True">
+                <label for="report_type">Generate Deanery-Wise report ?</label><br>
+            </div>
+            <input   type="submit" value="Generate Report" class="btn btn-primary">
         </form>
     </div>
 

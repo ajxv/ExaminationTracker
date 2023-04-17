@@ -59,6 +59,10 @@ def generate_report(request):
         deanery = request.POST["deanery"].upper()
         exam_shift = request.POST['exam_shift']
 
+        generate_deanery_overall_report = False
+        if 'report_type' in request.POST:
+            generate_deanery_overall_report = True
+
         output_data = {
             'date': [],
             'subject_code': [],
