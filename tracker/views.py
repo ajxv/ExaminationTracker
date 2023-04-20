@@ -50,18 +50,50 @@ def import_data(request):
     }
     return render(request, 'import_data.html', params)
 
+def generate_deanery_overall_report(request):
+    date = request.POST['date']
+    deanery = request.POST["deanery"].upper()
+
+    print(date, deanery)
+
+    input_file = glob(f"{INPUT_FILES_PATH}{os.path.sep}{date}_*")[0]
+
+    df = pd.read_excel(input_file)
+
+    # filter by deanery and exam shift
+    deanery_data = df.loc[df['Academic Site'].isin(DEANERY_COURSE_MAP[deanery])]
+
+    output_data = {
+        'date': [date],
+        'deanery': [deanery],
+        'packets': [None],
+        'present': [deanery_data['Attendance Status'].value_counts().get('Present', 0)],
+        'absent': [deanery_data['Attendance Status'].value_counts().get('Absent', 0)],
+    }
+
+    output_df = pd.DataFrame(output_data)
+
+    table_html = output_df.to_html()
+
+    params = {
+        'table_html': table_html,
+        'deanery': deanery,
+    }
+
+    return render(request, 'report.html', params)
+    
+
 def generate_report(request):
     success = False
 
     if request.method == "POST":
 
+        if 'report_type' in request.POST:
+            return generate_deanery_overall_report(request)
+
         date = request.POST['date']
         deanery = request.POST["deanery"].upper()
         exam_shift = request.POST['exam_shift']
-
-        generate_deanery_overall_report = False
-        if 'report_type' in request.POST:
-            generate_deanery_overall_report = True
 
         output_data = {
             'date': [],
@@ -97,8 +129,8 @@ def generate_report(request):
             
 
         output_df = pd.DataFrame(output_data)
-        output_html_path = os.path.join(OUTPUT_FILES_PATH, 'report.html')
-        output_pdf_path = os.path.join(OUTPUT_FILES_PATH, f'{date}_{deanery}_report.pdf')
+        # output_html_path = os.path.join(OUTPUT_FILES_PATH, 'report.html')
+        # output_pdf_path = os.path.join(OUTPUT_FILES_PATH, f'{date}_{deanery}_report.pdf')
 
         table_html = output_df.to_html()
 
