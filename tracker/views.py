@@ -24,6 +24,8 @@ DEANERY_SUBJECT_MAP = {
     'MANAGEMENT': []
 }
 
+PACKET_SIZE = 20
+
 
 def index(request):
     return render(request, 'index.html')
@@ -99,7 +101,8 @@ def generate_report(request):
             'date': [],
             'subject_code': [],
             'subject_title': [],
-            'packets': [],
+            'full_packets': [],
+            'last_packets': [],
             'present': [],
             'absent': [],
         }
@@ -125,7 +128,10 @@ def generate_report(request):
             output_data['subject_title'].append(subjectwise_data['Subject Name(Exam Dependent)'].unique()[0])
             output_data['present'].append(subjectwise_data['Attendance Status'].value_counts().get('Present', 0))
             output_data['absent'].append(subjectwise_data['Attendance Status'].value_counts().get('Absent', 0))
-            output_data['packets'].append(None)
+            output_data['full_packets'].append(output_data['present'][-1] // PACKET_SIZE)
+            output_data['last_packets'].append(output_data['present'][-1] - (output_data['full_packets'][-1] * PACKET_SIZE))
+            
+
             
 
         output_df = pd.DataFrame(output_data)
