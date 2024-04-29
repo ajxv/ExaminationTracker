@@ -1,22 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Generate Report{% endblock %}
+
 {% block content %}
 
     <div class="file-download d-flex justify-content-center">
         <form method="POST">
+            {% csrf_token %}
             <label class="font-weight-bold h6 mb-3">Generate Report</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <input type="date" class="form-control mb-1" name="date" id="date" style="width: 200px;" required>
+                </div>
+                <select class="custom-select text-center" id="exam_shift" name="exam_shift" required>
+                  <option value="AM" selected>AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
 
-            <input type="date" class="form-control mb-1" name="date" id="date" required>
-
-            <select class="custom-select mb-3" id="deanery" required>
+            <select class="custom-select mb-3" name="deanery" required>
                 <option value="" selected>Deanery</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="science">Science</option>
+                <option value="management">Management</option>
+                <option value="humanities">Humanities</option>
             </select>
-            
-            <input type="submit" value="Generate Report" class="btn btn-primary">
+            <div>
+                <input type="checkbox" id="report_type" name="report_type" value="True">
+                <label for="report_type">Generate Deanery-Wise report ?</label><br>
+            </div>
+            <input   type="submit" value="Generate Report" class="btn btn-primary">
         </form>
     </div>
 

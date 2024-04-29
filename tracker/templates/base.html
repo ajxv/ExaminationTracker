@@ -19,7 +19,7 @@
         <!-- script for loading template from external html -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-        <title>Base</title>
+        <title>{% block title %}{% endblock %}</title>
   
     </head>
     <body  class="d-flex flex-column min-vh-100">
@@ -32,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                       <a class="navbar-brand" href="{% url 'index' %}">
-                        <i class="bi bi-file-code" style="color: black;"></i>
+                        <i class="bi bi-file-earmark-text" style="color: black;"></i>
                       </a>
                       <li class="nav-item" id="import_data">
                         <a class="nav-link" href="{% url 'import_data' %}">Import Data</a>
